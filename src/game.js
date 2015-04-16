@@ -2,7 +2,7 @@
 
 
 angular.module('myApp',['ngTouch','ngDraggable'])
-  .controller('Ctrl', function ($window, $scope, $log,  $timeout, $interval,
+  .controller('Ctrl', function ($scope, $log,  $timeout, $interval,
        gameService,  gameLogic) {
     
     $scope.map = [
