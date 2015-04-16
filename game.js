@@ -4,9 +4,6 @@
 angular.module('myApp',['ngTouch','ngDraggable'])
   .controller('Ctrl', function ($window, $scope, $log,  $timeout, $interval,
        gameService,  gameLogic) {
-      	
-    var moveAudio = new Audio('audio/move.wav');
-    moveAudio.load();
     
     $scope.map = [
 		[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
@@ -65,10 +62,8 @@ angular.module('myApp',['ngTouch','ngDraggable'])
       $scope.board = params.stateAfterMove.board;
       if ($scope.board === undefined) {
         $scope.board = gameLogic.getInitialBoard();
-      }else{
-      	$timeout(function(){moveAudio.play();},100);
-      	//moveAudio.play();
       }
+
       $scope.isYourTurn = params.turnIndexAfterMove >= 0 && // game is ongoing
         params.yourPlayerIndex === params.turnIndexAfterMove; // it's my turn
       $scope.turnIndex = params.turnIndexAfterMove;
