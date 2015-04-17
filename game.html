@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp">
+<!-- build:[manifest] game.appcache -->
+<html lang="en" ng-app="myApp" ng-strict-di>
+<!-- /build -->
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Chinese Checker</title>
   <meta name="description" content="Chinese Checker game">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  
   <!-- build:js http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js -->
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.js"></script>
   <!-- /build -->
 
-  <script src="http://yoav-zibin.github.io/emulator/ngDraggable.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular-touch.min.js"></script>
+  <!--Enable the drag and drop in mobile device-->
+  <script src="http://yoav-zibin.github.io/emulator/examples/drag_n_drop/dragAndDropListeners.js"></script>
 
   <!-- build:js dist/everything.min.js -->
   <script src="src/gameLogic.js"></script>
@@ -28,42 +30,23 @@
   <script src="http://yoav-zibin.github.io/emulator/stateService.js"></script>
   <!-- /build -->
 
-<link rel="stylesheet" type="text/css" href="game.css">
+  <script src="languages/en.js"></script>
+  <!-- build:js http://yoav-zibin.github.io/emulator/angular-translate/angular-translate.2.6.1.min.js -->
+  <script src="http://yoav-zibin.github.io/emulator/angular-translate/angular-translate.2.6.1.js"></script>
+  <!-- /build -->
+
+  <link rel="stylesheet" type="text/css" href="game.css">
+  <link rel="stylesheet" type="text/css" href="http://yoav-zibin.github.io/emulator/main.css">
 </head>
-<body ng-controller="Ctrl">
+<body ng-cloak ng-controller="Ctrl">
+
  <div id="gameArea">
   <section id="board">
-  <img style="position:relative; border: 1px solid ;z-index: -1 ;width :625px; height:625px" src="img/GoodBoard.png">
-  	<div ng-repeat="row in board track by $index">
-        <div ng-repeat="cell in row track by $index" 
-        ng-drop="true"
-        ng-drop-success="onDropCallback($event,board.indexOf(row), $index)"
-        ng-click="cellClicked(board.indexOf(row),$index)" 
-        ng-style="{'position':'absolute','top':setPagePositionTop(board.indexOf(row), $index), 'left':setPagePosition($index, board.indexOf(row)) }" 
-        ng-class="{boxShape: cell}" >       
-        	<div 
-        	ng-drag="cell=='O'&& isYourTurn && turnIndex==0 || cell=='X'&& isYourTurn && turnIndex==1"
-        	ng-drag-success="onStartCallback($event,$parent.$index, $index)"
-        	ng-class="{'checkerShapeO': cell=='O', 'checkerShapeX': cell=='X', 
-        	boxGreen: selectedPosition[0][0]==board.indexOf(row) && selectedPosition[0][1]==$index , 
-        	 'move_up_left' :board.indexOf(row)==ani_point[0]&&$index==ani_point[1]&&ul,
-        	 'move_up_right': board.indexOf(row)==ani_point[0]&&$index==ani_point[1]&&ur,
-        	 'move_right': board.indexOf(row)==ani_point[0]&&$index==ani_point[1]&&r,
-        	 'move_left': board.indexOf(row)==ani_point[0]&&$index==ani_point[1]&&l,
-        	 'move_down_right': board.indexOf(row)==ani_point[0]&&$index==ani_point[1]&&dr,
-        	 'move_down_left': board.indexOf(row)==ani_point[0]&&$index==ani_point[1]&&dl,
-        	 'jump_up_left' :board.indexOf(row)==ani_point[0]&&$index==ani_point[1]&&jul,
-        	 'jump_up_right': board.indexOf(row)==ani_point[0]&&$index==ani_point[1]&&jur,
-        	 'jump_right': board.indexOf(row)==ani_point[0]&&$index==ani_point[1]&&jr,
-        	 'jump_left': board.indexOf(row)==ani_point[0]&&$index==ani_point[1]&&jl,
-        	 'jump_down_right': board.indexOf(row)==ani_point[0]&&$index==ani_point[1]&&jdr,
-        	 'jump_down_left': board.indexOf(row)==ani_point[0]&&$index==ani_point[1]&&jdl,
-        	 'jumped':board.indexOf(row)==ani_point[0]&&$index==ani_point[1] }"  ></div> 
-
-        </div>
-    </div>
+  <img style="position:relative; border: 1px solid ;z-index: -1 ;width :100%; height:100%;" src="img/GoodBoard.png">
+  	
   </img>
   </section>
 </div>
+
 </body>
 </html>
