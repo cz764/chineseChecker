@@ -100,6 +100,11 @@ angular.module('myApp')
     var move;
     var isChain = false;
     var chainValue = [];
+    window.handleDragEvent = handleDragEvent;
+
+    function handleDragEvent(type, clientX, clientY) {
+
+    }
     
     $scope.cellClicked = function(row, col) {
       $log.info(["Clicked on cell: ",row,col]);
