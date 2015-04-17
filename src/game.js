@@ -113,7 +113,7 @@ angular.module('myApp')
         $scope.selectedPosition[0] = [row, col];
         return;
       }else{
-        if($scope.board[row][col]==($scope.turnIndex==0 ?'O':'X')){
+        if($scope.board[row][col] == ($scope.turnIndex==0 ?'O':'X')){
           if(isNotSelectable(row,col)){
             return;
           }
@@ -124,7 +124,8 @@ angular.module('myApp')
         }
       }
       try{
-        moveOri = gameLogic.createMove($scope.selectedPosition[0][0],$scope.selectedPosition[0][1],$scope.selectedPosition[1][0],$scope.selectedPosition[1][1],$scope.turnIndex,$scope.board);
+        moveOri = gameLogic.createMove($scope.selectedPosition[0][0],$scope.selectedPosition[0][1],
+          $scope.selectedPosition[1][0],$scope.selectedPosition[1][1],$scope.turnIndex,$scope.board);
         $scope.isYourTurn = false;
         makeGameMove(true);
         $scope.selectedPosition = [];
@@ -143,51 +144,51 @@ angular.module('myApp')
       var oldcol = move[2].set.value.oldcol;
       $scope.ani_point[0] = oldrow;
       $scope.ani_point[1] = oldcol;
-      if(row==oldrow && col == oldcol+1){
+      if(row === oldrow && col === oldcol + 1){
         // up left
         $scope.ul = true;
       }
-      else if(row==oldrow+1 && col == oldcol+1){
+      else if(row === oldrow + 1 && col === oldcol + 1){
         // up right
         $scope.ur = true;
       }
-      else if(row==oldrow-1 && col == oldcol){
+      else if(row === oldrow - 1 && col === oldcol){
         // left
         $scope.l = true;
       }
-      else if(row==oldrow+1 && col == oldcol){
+      else if(row === oldrow + 1 && col === oldcol){
         // right
         $scope.r = true;
       }
-      else if(row==oldrow-1 && col == oldcol-1){
+      else if(row === oldrow - 1 && col === oldcol - 1){
         // down left
         $scope.dl = true;
       }
-      else if(row==oldrow && col == oldcol-1){
+      else if(row === oldrow && col === oldcol - 1){
         // down right
         $scope.dr = true;
       }
-      else if(row==oldrow && col == oldcol+2){
+      else if(row === oldrow && col === oldcol + 2){
         // jump up left
         $scope.jul = true;
       }
-      else if(row==oldrow+2 && col == oldcol+2){
+      else if(row === oldrow + 2 && col === oldcol + 2){
         // jump up right
         $scope.jur = true;
       }
-      else if(row==oldrow-2 && col == oldcol){
+      else if(row === oldrow - 2 && col === oldcol){
         // jump left
         $scope.jl = true;
       }
-      else if(row==oldrow+2 && col == oldcol){
+      else if(row === oldrow + 2 && col === oldcol){
         // jump right
         $scope.jr = true;
       }
-      else if(row==oldrow-2 && col == oldcol-2){
+      else if(row === oldrow - 2 && col === oldcol - 2){
         // jump down left
         $scope.jdl = true;
       }
-      else if(row==oldrow && col == oldcol-2){
+      else if(row === oldrow && col === oldcol - 2){
         // jump down right
         $scope.jdr = true;
       }
@@ -198,65 +199,21 @@ angular.module('myApp')
       var possibleMoves = [];
       var i, j;
       var tempMove;
-      for(i=1; i<19; i++){
-        for(j=1; j<$scope.board[i].length; j++){
+      for(i = 1; i < 19; i++){
+        for(j = 1; j < $scope.board[i].length; j++){
           try{
             tempMove = gameLogic.createMove(row, col, i, j, $scope.turnIndex, $scope.board);
             possibleMoves.push([i,j]);
           }catch(e){
-            $log.error(e);
+            // $log.error(e);
           }
         }
       }
-      if(possibleMoves.length===0){
+      if(possibleMoves.length === 0){
         return true;
       }else{
         return false;
       }
-    }
-    
-    
-    function checkDragDrop(row, col){
-      $scope.boolboard = angular.copy($scope.board);
-      var possibleMoves = [];
-      var i, j;
-      var tempMove;
-      for(i=0; i<19; i++){
-        for(j=0; j<$scope.boolboard[i].length; j++){
-          $scope.boolboard[i][j] = false;
-          try{
-            tempMove = gameLogic.createMove(row, col, i, j, $scope.turnIndex, $scope.board);
-            possibleMoves.push([i,j]);
-          }catch(e){
-            $log.error(e);
-          }
-        }
-      }
-      for(i=0; i<possibleMoves.length; i++){
-        $scope.boolboard[possibleMoves[i][0]][possibleMoves[i][1]] = true;
-      }
-    }
-    
-    $scope.onDropCallback = function( event, r, c ){
-      var row = r;
-      var col = c;
-      $scope.cellClicked(row, col); 
-    }
-    
-    $scope.onStartCallback = function( event, r, c ){
-      //console.log(row,col);
-      var row = r;
-      var col = c;
-      $log.info(["drag on cell: ",row, col]);
-      if(!$scope.isYourTurn){
-        return;
-      }
-      $scope.selectedPosition =[];
-      if($scope.selectedPosition.length === 0){
-        $scope.selectedPosition[0] = [row, col];
-        checkDragDrop(row, col);
-        return;
-      } 
     }
        
     // pay attantion to WIN condition: endMatch
@@ -268,10 +225,10 @@ angular.module('myApp')
         if(isChain && chainValue.length === 0){
           chainValue = angular.copy(moveOri[4].set.value);  // initial chainValue when first meet
         }
-        if(isChain && chainValue.length > 2 && move[0].setTurn===undefined){  // end Match
+        if(isChain && chainValue.length > 2 && move[0].setTurn === undefined){  // end Match
           move[0] = {setTurn:{turnIndex: $scope.turnIndex}};
         }
-        if(isChain && chainValue.length > 2 && move[0].setTurn!==undefined){  // normal
+        if(isChain && chainValue.length > 2 && move[0].setTurn !== undefined){  // normal
           move[0].setTurn.turnIndex = $scope.turnIndex;
         } 
         if(isChain){  // change the shape of move
@@ -290,10 +247,10 @@ angular.module('myApp')
           chainValue.pop();
           chainValue.reverse(); 
         }else{
-        moveOri[3].set.value = false;
-        move[0] = moveOri[0];
-        isChain = false;
-        chainValue = [];
+          moveOri[3].set.value = false;
+          move[0] = moveOri[0];
+          isChain = false;
+          chainValue = [];
         }
         setAll(move); 
         $timeout(function(){
