@@ -2,18 +2,18 @@ body {
   background: #FCFAF2;
   margin: 0;
   padding: 0;
-  width: 625px;
-  height: 625px;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   position: fixed!important;
 }
 
 .boxShape {
-    	border : 0.1px solid #a1a1a1;
-   	 	padding : 5px 5px;
-   		width : 15px;
-   		height : 15px;
-   		border-radius: 50px;
+    	border : 1px solid #a1a1a1;
+   	 	padding : 5px 4px;
+   		width : 3.5%;
+   		height : 3.5%;
+   		border-radius: 100%;
    		opacity: 1;
     	text-align: center; 
 	}
@@ -414,14 +414,14 @@ Jump move key frames
   50% {
     width: 160%;
     height: 160%;
-    top: -225%;
-    left: -125%
+    top: -125%;
+    left: -75%
   }
   100% {
     width: 100%;
     height: 100%;
-    top: -450%;
-    left: -250%
+    top: -250%;
+    left: -120%
   }
 }
 /*move up left*/
@@ -433,14 +433,14 @@ Jump move key frames
   50% {
     width: 160%;
     height: 160%;
-    top: -225%;
-    left: -125%
+    top: -125%;
+    left: -75%
   }
   100% {
     width: 100%;
     height: 100%;
-    top: -450%;
-    left: -250%
+    top: -250%;
+    left: -120%
   }
 }
 
@@ -453,14 +453,14 @@ Jump move key frames
   50% {
     width: 160%;
     height: 160%;
-    top: -225%;
-    left: 125%
+    top: -125%;
+    left: 75%
   }
   100% {
     width: 100%;
     height: 100%;
-    top: -450%;
-    left: 250%
+    top: -250%;
+    left: 120%
   }
 }
 /*move up right*/
@@ -472,14 +472,14 @@ Jump move key frames
   50% {
     width: 160%;
     height: 160%;
-    top: -225%;
-    left: 125%
+    top: -125%;
+    left: 75%
   }
   100% {
     width: 100%;
     height: 100%;
-    top: -450%;
-    left: 250%
+    top: -250%;
+    left: 120%
   }
 }
 
@@ -493,13 +493,13 @@ Jump move key frames
     width: 160%;
     height: 160%;
     top: 0%;
-    left: -250%
+    left: -120%
   }
   100% {
     width: 100%;
     height: 100%;
     top: 0%;
-    left: -500%
+    left: -250%
   }
 }
 /*move left*/
@@ -512,13 +512,13 @@ Jump move key frames
     width: 160%;
     height: 160%;
     top: 0%;
-    left: -250%
+    left: -120%
   }
   100% {
     width: 100%;
     height: 100%;
     top: 0%;
-    left: -500%
+    left: -250%
   }
 }
 
@@ -532,13 +532,13 @@ Jump move key frames
     width: 160%;
     height: 160%;
     top: 0%;
-    left: 250%
+    left: 120%
   }
   100% {
     width: 100%;
     height: 100%;
     top: 0%;
-    left: 500%
+    left: 250%
   }
 }
 /*move right*/
@@ -551,13 +551,13 @@ Jump move key frames
     width: 160%;
     height: 160%;
     top: 0%;
-    left: 250%
+    left: 120%
   }
   100% {
     width: 100%;
     height: 100%;
     top: 0%;
-    left: 500%
+    left: 250%
   }
 }
 
@@ -570,14 +570,14 @@ Jump move key frames
   50% {
     width: 160%;
     height: 160%;
-    top: 225%;
-    left: -125%
+    top: 125%;
+    left: -50%
   }
   100% {
     width: 100%;
     height: 100%;
-    top: 450%;
-    left: -250%
+    top: 250%;
+    left: -120%
   }
 }
 /*move down left*/
@@ -589,14 +589,14 @@ Jump move key frames
   50% {
     width: 160%;
     height: 160%;
-    top: 225%;
-    left: -125%
+    top: 125%;
+    left: -50%
   }
   100% {
     width: 100%;
     height: 100%;
-    top: 450%;
-    left: -250%
+    top: 250%;
+    left: -120%
   }
 }
 
@@ -609,14 +609,14 @@ Jump move key frames
   50% {
     width: 160%;
     height: 160%;
-    top: 225%;
-    left: 125%
+    top: 125%;
+    left: 100%
   }
   100% {
     width: 100%;
     height: 100%;
-    top: 450%;
-    left: 250%
+    top: 250%;
+    left: 150%
   }
 }
 /*move down right*/
@@ -628,13 +628,13 @@ Jump move key frames
   50% {
     width: 160%;
     height: 160%;
-    top: 225%;
-    left: 125%
+    top: 125%;
+    left: 100%
   }
   100% {
     width: 100%;
     height: 100%;
-    top: 450%;
-    left: 250%
+    top: 250%;
+    left: 150%
   }
 }

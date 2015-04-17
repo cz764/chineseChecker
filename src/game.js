@@ -11,6 +11,19 @@ angular.module('myApp')
 
     'use strict';
     resizeGameAreaService.setWidthToHeight(1);
+
+    $scope.selectedPosition = [];
+    var moveOri;
+    var move;
+    var isChain = false;
+    var chainValue = [];
+    var gameArea = document.getElementById("gameArea");
+    var rowsNum = 17;
+    var colsNum = 17;
+    var draggingStartedRowCol = null; // The {row: YY, col: XX} where dragging started.
+    var draggingPiece = null;
+    var nextZIndex = 61;
+    
     
     $scope.map = [
     [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
@@ -93,20 +106,123 @@ angular.module('myApp')
           },300);    
       }   
     }
-    
-    
-    $scope.selectedPosition = [];
-    var moveOri;
-    var move;
-    var isChain = false;
-    var chainValue = [];
+      
     window.handleDragEvent = handleDragEvent;
 
     function handleDragEvent(type, clientX, clientY) {
+      // Center point in gameArea
+      var x = clientX - gameArea.offsetLeft;
+      var y = clientY - gameArea.offsetTop;
+      var row, col;
+      // Is outside gameArea?
+      if (x < 0 || y < 0 || x >= gameArea.clientWidth || y >= gameArea.clientHeight) {
+        if (draggingPiece) {
+          // Drag the piece where the touch is (without snapping to a square).
+          var size = getSquareWidthHeight();
+          setDraggingPieceTopLeft({top: y - size.height / 2, left: x - size.width / 2});
+        } else {
+          return;
+        }
+      } else {
+        // Inside gameArea. Let's find the containing square's row and col
+        var col = Math.floor(colsNum * x / gameArea.clientWidth);
+        var row = Math.floor(rowsNum * y / gameArea.clientHeight);
+        var r_row = row;
+        var r_col = col;
 
+        if (type === "touchstart" && !draggingStartedRowCol) {
+          // drag started
+          if ($scope.board[r_row][r_col]) {            
+            draggingStartedRowCol = {row: r_row, col: r_col};
+            $log.info("dragging started from: ( " + JSON.stringify(draggingStartedRowCol) + " )");
+            draggingPiece = document.getElementById("myPiece_" + 
+              draggingStartedRowCol.row + "x" + draggingStartedRowCol.col);
+            }
+          }
+        }
+        if (!draggingPiece) {
+          return;
+        }
+        if (type === "touchend") {
+          var from = draggingStartedRowCol;
+          var to = {row: row, col: col};
+          dragDone(from, to);
+          
+        } else {
+          // Drag continue
+          setDraggingPieceTopLeft(getSquareTopLeft(row, col));
+          var centerXY = getSquareCenterXY(row, col);
+        }
+      if (type === "touchend" || type === "touchcancel" || type === "touchleave") {
+        // drag ended
+        // return the piece to it's original style (then angular will take care to hide it).
+        setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col));         
+        draggingStartedRowCol = null;
+        draggingPiece = null;
+      }
+    }
+
+    function setDraggingPieceTopLeft(topLeft) {
+      var originalSize = getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col);
+      draggingPiece.style.left = (topLeft.left - originalSize.left) + "px";
+      draggingPiece.style.top = (topLeft.top - originalSize.top) + "px";
+    }
+
+    function getSquareWidthHeight() {
+      return {
+        width: gameArea.clientWidth / colsNum,
+        height: gameArea.clientHeight / rowsNum
+      };
+    }
+
+    function getSquareTopLeft(row, col) {
+      var size = getSquareWidthHeight();
+      return {top: row * size.height, left: col * size.width}
+    }
+
+    function getSquareCenterXY(row, col) {
+      var size = getSquareWidthHeight();
+      return {
+        x: col * size.width + size.width / 2,
+        y: row * size.height + size.height / 2
+      };
+    }
+
+    function dragDone(from, to) {
+      $rootScope.$apply(function () {
+          dragDoneHandler(from, to);
+      });
+    }
+
+    function dragDoneHandler(from, to) {
+      var msg = "Dragged piece " + from.row + "x" + from.col + " to square " + to.row + "x" + to.col;
+      $log.info(msg);
+      // Update piece in board and make the move
+      if (window.location.search === '?throwException') {
+        throw new Error("Throwing the error because URL has '?throwException'");
+      }
+      if (!$scope.isYourTurn) {
+        return;
+      }
+      // need to rotate the angle if playblack
+      if($scope.rotate) {
+       
+      }
+      actuallyMakeMove(from, to);      
+    }
+
+    function actuallyMakeMove(from, to) {
+      try {
+        moveOri = gameLogic.createMove(from.row, from.col, to.row, to.col, $scope.turnIndex, $scope.board);
+        $scope.isYourTurn = false; // to prevent making another move
+        makeGameMove(true);
+      } catch (e) {
+        $log.info(["It is illegal to move position from:", $scope.oldrow, $scope.oldcol," to position:",row,col]);
+        return;
+      }
     }
     
-    $scope.cellClicked = function(row, col) {
+  /* $scope.cellClicked = function(row, col) {
       $log.info(["Clicked on cell: ",row,col]);
       if(!$scope.isYourTurn){
         return;
@@ -139,7 +255,7 @@ angular.module('myApp')
         $scope.selectedPosition = [];
         return;
       }
-    };
+    }; */
     
     function setAll(move){
       resetAll();
