@@ -125,10 +125,10 @@ angular.module('myApp')
         }
       } else {
         // Inside gameArea. Let's find the containing square's row and col
-        var col = Math.floor(colsNum * x / gameArea.clientWidth);
+        var col = (colsNum * x / gameArea.clientWidth);
         var row = Math.floor(rowsNum * y / gameArea.clientHeight);
-        var r_row = row;
-        var r_col = col;
+        var r_row = rowsNum - row;
+        var r_col = colsNum - col + .5;
 
         if (type === "touchstart" && !draggingStartedRowCol) {
           // drag started
@@ -160,6 +160,11 @@ angular.module('myApp')
         draggingStartedRowCol = null;
         draggingPiece = null;
       }
+    }
+
+    function roundHalf(num) {
+      num = Math.round(num*2)/2;
+      return num;
     }
 
     function setDraggingPieceTopLeft(topLeft) {
