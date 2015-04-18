@@ -22,8 +22,7 @@ angular.module('myApp')
     var colsNum = 17;
     var draggingStartedRowCol = null; // The {row: YY, col: XX} where dragging started.
     var draggingPiece = null;
-    var nextZIndex = 61;
-    
+    var nextZIndex = 61;   
     
     $scope.map = [
     [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
@@ -124,16 +123,18 @@ angular.module('myApp')
           return;
         }
       } else {
-        // Inside gameArea. Let's find the containing square's row and col
-        var col = (colsNum * x / gameArea.clientWidth);
+        // Inside gameArea. Let's find the containing square's row and col      
         var row = Math.floor(rowsNum * y / gameArea.clientHeight);
+        var col = (row % 2 === 0) ? Math.floor(colsNum * x / gameArea.clientWidth) : 
+                      roundHalf(colsNum * x / gameArea.clientWidth);
         var r_row = rowsNum - row;
-        var r_col = colsNum - col + .5;
+        var r_col = colsNum - col;
+        var boardRowCol = findRowColInBoard(r_row, r_col);
 
         if (type === "touchstart" && !draggingStartedRowCol) {
           // drag started
-          if ($scope.board[r_row][r_col]) {            
-            draggingStartedRowCol = {row: r_row, col: r_col};
+          if (boardRowCol && $scope.board[boardRowCol.row][boardRowCol.col]) {            
+            draggingStartedRowCol = {row: row, col: col};
             $log.info("dragging started from: ( " + JSON.stringify(draggingStartedRowCol) + " )");
             draggingPiece = document.getElementById("myPiece_" + 
               draggingStartedRowCol.row + "x" + draggingStartedRowCol.col);
@@ -145,7 +146,7 @@ angular.module('myApp')
         }
         if (type === "touchend") {
           var from = draggingStartedRowCol;
-          var to = {row: row, col: col};
+          var to = boardRowCol;
           dragDone(from, to);
           
         } else {
@@ -163,8 +164,20 @@ angular.module('myApp')
     }
 
     function roundHalf(num) {
-      num = Math.round(num*2)/2;
-      return num;
+      return Math.round(num) - 0.5;
+    }
+
+    function findRowColInBoard(row, col) {
+      var rowColInDragNDrop = [col, row];
+      for (var i = 0; i < $scope.map.length; i++) {
+        var mapWithIndex = $scope.map[i];
+        for (var j = 0; j < mapWithIndex.length; j++) {
+          if (angular.equals(mapWithIndex[j], rowColInDragNDrop)) {
+            return {row: i, col: j};
+          }
+        }
+      }
+      return null;
     }
 
     function setDraggingPieceTopLeft(topLeft) {
