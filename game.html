@@ -49,7 +49,7 @@
         ng-click="cellClicked(board.indexOf(row),$index)" 
         ng-style="{'position':'absolute','top':setPagePositionTop(board.indexOf(row), $index), 'left':setPagePosition($index, board.indexOf(row)) }" 
         ng-class="{boxShape: cell}" >       
-          <div id="myPiece_{{row}}x{{cell}}"
+          <div id="myPiece_{{board.indexOf(row)}}x{{$index}}"
           ng-class="{'checkerShapeO': cell=='O', 'checkerShapeX': cell=='X', 
           boxGreen: selectedPosition[0][0]==board.indexOf(row) && selectedPosition[0][1]==$index , 
            'move_up_left' :board.indexOf(row)==ani_point[0]&&$index==ani_point[1]&&ul,
