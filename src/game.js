@@ -134,7 +134,7 @@ angular.module('myApp')
         if (type === "touchstart" && !draggingStartedRowCol) {
           // drag started
           if (boardRowCol && $scope.board[boardRowCol.row][boardRowCol.col]) {            
-            draggingStartedRowCol = {row: row, col: col};
+            draggingStartedRowCol = {row: rowsNum + 1 - boardRowCol.row, col: colsNum + 1 - boardRowCol.col};
             $log.info("dragging started from: ( " + JSON.stringify(draggingStartedRowCol) + " )");
             draggingPiece = document.getElementById("myPiece_" + 
               draggingStartedRowCol.row + "x" + draggingStartedRowCol.col);
@@ -151,8 +151,8 @@ angular.module('myApp')
           
         } else {
           // Drag continue
-          setDraggingPieceTopLeft(getSquareTopLeft(row, col));
-          var centerXY = getSquareCenterXY(row, col);
+          setDraggingPieceTopLeft(getSquareTopLeft(rowsNum + 1 - boardRowCol.row, colsNum + 1 - boardRowCol.col));
+          var centerXY = getSquareCenterXY(rowsNum + 1 - boardRowCol.row, colsNum + 1 - boardRowCol.col);
         }
       if (type === "touchend" || type === "touchcancel" || type === "touchleave") {
         // drag ended
