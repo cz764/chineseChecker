@@ -219,7 +219,7 @@ function createMove(oldrow,oldcol,row,col,turnIndexBeforeMove,boardBeforeMove){
     }
     //var boardAfterMove = JSON.parse(JSON.stringify(boardBeforeMove));
     var boardAfterMove = copyObject(boardBeforeMove);
-    boardAfterMove[row][col] = turnIndexBeforeMove===0?'O' : 'X';     //Index => 0 than 'O', turnIndex => 1 than 'X'
+    boardAfterMove[row][col] = turnIndexBeforeMove === 0 ? 'O' : 'X';     //Index => 0 than 'O', turnIndex => 1 than 'X'
     if(boardAfterMove[oldrow][oldcol]===boardAfterMove[row][col]){
     boardAfterMove[oldrow][oldcol] = 'a';
   }else{

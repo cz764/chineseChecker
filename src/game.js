@@ -21,6 +21,7 @@ angular.module('myApp')
     var rowsNum = 17;
     var colsNum = 17;
     var draggingStartedRowCol = null; // The {row: YY, col: XX} where dragging started.
+    var draggingStartedRowColInBoard = null; // The {row: YY, col: XX} where dragging started mapped to board
     var draggingPiece = null;
     var nextZIndex = 61;   
     
@@ -135,7 +136,8 @@ angular.module('myApp')
           // drag started
           if (boardRowCol && $scope.board[boardRowCol.row][boardRowCol.col]) {            
             draggingStartedRowCol = {row: rowsNum + 1 - boardRowCol.row, col: colsNum + 1 - boardRowCol.col};
-            $log.info("dragging started from: ( " + JSON.stringify(draggingStartedRowCol) + " )");
+            draggingStartedRowColInBoard = boardRowCol;
+            $log.info("dragging started from: ( " + JSON.stringify(boardRowCol) + " )");
             draggingPiece = document.getElementById("myPiece_" + 
               draggingStartedRowCol.row + "x" + draggingStartedRowCol.col);
             }
@@ -145,10 +147,9 @@ angular.module('myApp')
           return;
         }
         if (type === "touchend") {
-          var from = draggingStartedRowCol;
+          var from = draggingStartedRowColInBoard;
           var to = boardRowCol;
-          dragDone(from, to);
-          
+          dragDone(from, to);      
         } else {
           // Drag continue
           setDraggingPieceTopLeft(getSquareTopLeft(rowsNum + 1 - boardRowCol.row, colsNum + 1 - boardRowCol.col));
@@ -159,6 +160,7 @@ angular.module('myApp')
         // return the piece to it's original style (then angular will take care to hide it).
         setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col));         
         draggingStartedRowCol = null;
+        draggingStartedRowColInBoard = null;
         draggingPiece = null;
       }
     }
@@ -168,7 +170,7 @@ angular.module('myApp')
     }
 
     function findRowColInBoard(row, col) {
-      var rowColInDragNDrop = [col, row];
+      var rowColInDragNDrop = [18 - col, 18 - row];
       for (var i = 0; i < $scope.map.length; i++) {
         var mapWithIndex = $scope.map[i];
         for (var j = 0; j < mapWithIndex.length; j++) {
@@ -182,8 +184,8 @@ angular.module('myApp')
 
     function setDraggingPieceTopLeft(topLeft) {
       var originalSize = getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col);
-      draggingPiece.style.left = (topLeft.left - originalSize.left) + "px";
-      draggingPiece.style.top = (topLeft.top - originalSize.top) + "px";
+      draggingPiece.style.left = (topLeft.left - originalSize.left) + "%";
+      draggingPiece.style.top = (topLeft.top - originalSize.top) + "%";
     }
 
     function getSquareWidthHeight() {
@@ -231,11 +233,13 @@ angular.module('myApp')
 
     function actuallyMakeMove(from, to) {
       try {
+        $scope.oldrow = from.row;
+        $scope.oldcol = from.col;
         moveOri = gameLogic.createMove(from.row, from.col, to.row, to.col, $scope.turnIndex, $scope.board);
         $scope.isYourTurn = false; // to prevent making another move
         makeGameMove(true);
       } catch (e) {
-        $log.info(["It is illegal to move position from:", $scope.oldrow, $scope.oldcol," to position:",row,col]);
+        $log.info(["It is illegal to move position from:", $scope.oldrow, $scope.oldcol," to position:",to.row, to.col]);
         return;
       }
     }
