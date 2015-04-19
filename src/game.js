@@ -24,7 +24,11 @@ angular.module('myApp')
     var draggingStartedRowColInBoard = null; // The {row: YY, col: XX} where dragging started mapped to board
     var draggingPiece = null;
     var nextZIndex = 61;   
-    
+    var currentPiece = null;
+    var draggingHole = null;
+    var currentHole = null;
+
+
     $scope.map = [
     [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
     [[0,0],[0,0],[0,0],[0,0],[0,0],[3,13],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
@@ -139,7 +143,8 @@ angular.module('myApp')
             draggingStartedRowColInBoard = boardRowCol;
             $log.info("dragging started from: ( " + JSON.stringify(boardRowCol) + " )");
             draggingPiece = document.getElementById("myPiece_" + 
-              draggingStartedRowCol.row + "x" + draggingStartedRowCol.col);
+              draggingStartedRowColInBoard.row + "x" + draggingStartedRowColInBoard.col);
+            draggingHole = draggingPiece.parentNode;
             }
           }
         }
@@ -152,8 +157,17 @@ angular.module('myApp')
           dragDone(from, to);      
         } else {
           // Drag continue
-          setDraggingPieceTopLeft(getSquareTopLeft(rowsNum + 1 - boardRowCol.row, colsNum + 1 - boardRowCol.col));
-          var centerXY = getSquareCenterXY(rowsNum + 1 - boardRowCol.row, colsNum + 1 - boardRowCol.col);
+          currentPiece = document.getElementById("myPiece_" + boardRowCol.row + "x" + boardRowCol.col);
+          currentHole = currentPiece.parentNode;
+          //console.log((parseFloat(currentHole.style.left) - parseFloat(draggingHole.style.left)) / 0.035 + '%');
+          
+          var deltaTop = (parseFloat(currentHole.style.top) - parseFloat(draggingHole.style.top)) / 0.035 + '%';
+          var deltaLeft = (parseFloat(currentHole.style.left) - parseFloat(draggingHole.style.left)) / 0.035 + '%';
+
+          draggingPiece.style.left = deltaLeft;
+          draggingPiece.style.top = deltaTop;
+          //setDraggingPieceTopLeft(getSquareTopLeft(rowsNum + 1 - boardRowCol.row, colsNum + 1 - boardRowCol.col));
+          //var centerXY = getSquareCenterXY(rowsNum + 1 - boardRowCol.row, colsNum + 1 - boardRowCol.col);
         }
       if (type === "touchend" || type === "touchcancel" || type === "touchleave") {
         // drag ended
@@ -190,8 +204,8 @@ angular.module('myApp')
 
     function getSquareWidthHeight() {
       return {
-        width: gameArea.clientWidth / colsNum,
-        height: gameArea.clientHeight / rowsNum
+        width: 2 * gameArea.clientWidth / colsNum,
+        height: 2 * gameArea.clientHeight / rowsNum
       };
     }
 
