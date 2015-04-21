@@ -155,6 +155,8 @@ angular.module('myApp')
             draggingPiece = document.getElementById("myPiece_" + 
               draggingStartedRowColInBoard.row + "x" + draggingStartedRowColInBoard.col);
             draggingHole = draggingPiece.parentNode;
+            draggingPiece.style['width'] = "150%";
+            draggingPiece.style['height'] = "150%";
             draggingPiece.style['border-width'] = "4px";
             draggingPiece.style['border-style'] = "groove";
             draggingPiece.style['border-color'] = "yellow";
@@ -174,8 +176,8 @@ angular.module('myApp')
           currentHole = currentPiece.parentNode;
           //console.log((parseFloat(currentHole.style.left) - parseFloat(draggingHole.style.left)) / 0.035 + '%');
           
-          var deltaTop = (parseFloat(currentHole.style.top) - parseFloat(draggingHole.style.top)) / 0.035 + '%';
-          var deltaLeft = (parseFloat(currentHole.style.left) - parseFloat(draggingHole.style.left)) / 0.035 + '%';
+          var deltaTop = (parseFloat(currentHole.style.top) - parseFloat(draggingHole.style.top)) / 0.035 - 100 + '%';
+          var deltaLeft = (parseFloat(currentHole.style.left) - parseFloat(draggingHole.style.left)) / 0.035 - 100 + '%';
 
           draggingPiece.style.left = deltaLeft;
           draggingPiece.style.top = deltaTop;
@@ -189,6 +191,8 @@ angular.module('myApp')
         draggingPiece.style['border-width'] = "";
         draggingPiece.style['border-style'] = "";
         draggingPiece.style['border-color'] = "";
+        draggingPiece.style['width'] = "100%";
+        draggingPiece.style['height'] = "100%";
         draggingStartedRowCol = null;
         draggingStartedRowColInBoard = null;
         draggingPiece = null;
