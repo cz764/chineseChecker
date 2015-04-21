@@ -155,35 +155,37 @@ angular.module('myApp')
             draggingPiece = document.getElementById("myPiece_" + 
               draggingStartedRowColInBoard.row + "x" + draggingStartedRowColInBoard.col);
             draggingHole = draggingPiece.parentNode;
-            draggingPiece.style['width'] = "150%";
-            draggingPiece.style['height'] = "150%";
-            draggingPiece.style['border-width'] = "4px";
-            draggingPiece.style['border-style'] = "groove";
-            draggingPiece.style['border-color'] = "yellow";
-            }
+            if ($scope.board[draggingStartedRowColInBoard.row][draggingStartedRowColInBoard.col] !== 'a') {
+              draggingPiece.style['width'] = "150%";
+              draggingPiece.style['height'] = "150%";
+              draggingPiece.style['border-width'] = "4px";
+              draggingPiece.style['border-style'] = "groove";
+              draggingPiece.style['border-color'] = "yellow";
+            }           
           }
         }
-        if (!draggingPiece) {
-          return;
-        }
-        if (type === "touchend") {
-          var from = draggingStartedRowColInBoard;
-          var to = boardRowCol;
-          dragDone(from, to);      
-        } else {
-          // Drag continue
-          currentPiece = document.getElementById("myPiece_" + boardRowCol.row + "x" + boardRowCol.col);
-          currentHole = currentPiece.parentNode;
-          //console.log((parseFloat(currentHole.style.left) - parseFloat(draggingHole.style.left)) / 0.035 + '%');
-          
-          var deltaTop = (parseFloat(currentHole.style.top) - parseFloat(draggingHole.style.top)) / 0.035 - 100 + '%';
-          var deltaLeft = (parseFloat(currentHole.style.left) - parseFloat(draggingHole.style.left)) / 0.035 - 100 + '%';
+      }
+      if (!draggingPiece) {
+        return;
+      }
+      if (type === "touchend") {
+        var from = draggingStartedRowColInBoard;
+        var to = boardRowCol;
+        dragDone(from, to);      
+      } else {
+        // Drag continue
+        currentPiece = document.getElementById("myPiece_" + boardRowCol.row + "x" + boardRowCol.col);
+        currentHole = currentPiece.parentNode;
+        //console.log((parseFloat(currentHole.style.left) - parseFloat(draggingHole.style.left)) / 0.035 + '%');
+        
+        var deltaTop = (parseFloat(currentHole.style.top) - parseFloat(draggingHole.style.top)) / 0.035 - 100 + '%';
+        var deltaLeft = (parseFloat(currentHole.style.left) - parseFloat(draggingHole.style.left)) / 0.035 - 100 + '%';
 
-          draggingPiece.style.left = deltaLeft;
-          draggingPiece.style.top = deltaTop;
-          //setDraggingPieceTopLeft(getSquareTopLeft(rowsNum + 1 - boardRowCol.row, colsNum + 1 - boardRowCol.col));
-          //var centerXY = getSquareCenterXY(rowsNum + 1 - boardRowCol.row, colsNum + 1 - boardRowCol.col);
-        }
+        draggingPiece.style.left = deltaLeft;
+        draggingPiece.style.top = deltaTop;
+        //setDraggingPieceTopLeft(getSquareTopLeft(rowsNum + 1 - boardRowCol.row, colsNum + 1 - boardRowCol.col));
+        //var centerXY = getSquareCenterXY(rowsNum + 1 - boardRowCol.row, colsNum + 1 - boardRowCol.col);
+      }
       if (type === "touchend" || type === "touchcancel" || type === "touchleave") {
         // drag ended
         // return the piece to it's original style (then angular will take care to hide it).
