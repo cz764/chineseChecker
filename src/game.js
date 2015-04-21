@@ -27,6 +27,8 @@ angular.module('myApp')
     var currentPiece = null;
     var draggingHole = null;
     var currentHole = null;
+    var whitePlayer = 'O';
+    var blackPlayer = 'X';
 
 
     $scope.map = [
@@ -54,11 +56,11 @@ angular.module('myApp')
     $scope.newposition = 50;
     $scope.newpositionTop = 50;
     $scope.setPagePosition = function(index, parentIndex) {
-        $scope.newposition =  $scope.map[parentIndex][index][0] * 6.7 - 12.5 + '%'
+        $scope.newposition =  $scope.map[parentIndex][index][0] * 6.3 - 9 + '%'
         return $scope.newposition;
     }
     $scope.setPagePositionTop = function(parentIndex, index){
-        $scope.newpositionTop = $scope.map[parentIndex][index][1] * 5.7 - 3.5 + '%'
+        $scope.newpositionTop = $scope.map[parentIndex][index][1] * 5.7 - 3.8 + '%'
         return $scope.newpositionTop;
     }   
     
@@ -98,6 +100,14 @@ angular.module('myApp')
       }else if(!$scope.isYourTurn && params.playersInfo[params.yourPlayerIndex].playerId !== ''){
         //setAll(params.move);  // show opponent's movement
       }
+
+      // If the play mode is not pass and play then "rotate" the board
+      // for the player. Therefore the board will always look from the
+      // point of view of the player in single player mode...
+      $scope.rotate = (params.playMode === "playBlack") ? true : false;
+
+      var copyOfBoard = angular.copy($scope.board);
+      if ($scope.rotate) { $scope.board = getRotateBoard(copyOfBoard); }
       
       if(isChain){
         makeGameMove(true);
@@ -202,6 +212,26 @@ angular.module('myApp')
       return null;
     }
 
+    function getRotateBoard(board) {
+      var boardRotating = angular.copy(board);
+      var alternatePlayer = '@';
+      var boardChangedtoAlternate = changeBoardFromTo(board, whitePlayer, alternatePlayer);
+      var boardChangedtoBlack = changeBoardFromTo(boardChangedtoAlternate, whitePlayer, blackPlayer);
+      var boardchangedtoWhite = changeBoardFromTo(boardChangedtoBlack, alternatePlayer, whitePlayer);
+    }
+
+    function changeBoardFromTo(board, fromPlayer, toPlayer) {
+      var resultBoard = angular.copy(board);
+      for (var i = 0; i < resultBoard.length; i++) {
+        for (var j = 0; j < resultBoard[i].length; j++) {
+          if (resultBoard[i][j] === fromPlayer) {
+            resultBoard[i][j] = toPlayer;
+          }
+        }
+      }
+      return resultBoard;
+    }
+
     function setDraggingPieceTopLeft(topLeft) {
       var originalSize = getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col);
       draggingPiece.style.left = (topLeft.left - originalSize.left) + "%";
@@ -230,7 +260,7 @@ angular.module('myApp')
 
     function dragDone(from, to) {
       $rootScope.$apply(function () {
-          dragDoneHandler(from, to);
+        dragDoneHandler(from, to);
       });
     }
 
@@ -244,17 +274,26 @@ angular.module('myApp')
       if (!$scope.isYourTurn) {
         return;
       }
+
+      var realFrom = from,
+          realTo = to;
       // need to rotate the angle if playblack
       if($scope.rotate) {
-       
+        var fromInMap = $scope.map[from.row][from.col],
+            toInMap = $scope.map[to.row][to.col],
+            realFrom = findRowColInBoard(18 - fromInMap.row, 18 - fromInMap.col),
+            realTo = findRowColInBoard(18 - toInMap.row, 18 - toInMap.col);
+        var rotateBoard = getRotateBoard(angular.copy($scope.board));
+        $scope.board = rotateBoard;
       }
-      actuallyMakeMove(from, to);      
+      actuallyMakeMove(realFrom, realTo);      
     }
 
     function actuallyMakeMove(from, to) {
       try {
         $scope.oldrow = from.row;
         $scope.oldcol = from.col;
+
         moveOri = gameLogic.createMove(from.row, from.col, to.row, to.col, $scope.turnIndex, $scope.board);
         $scope.isYourTurn = false; // to prevent making another move
         makeGameMove(true);
@@ -263,41 +302,6 @@ angular.module('myApp')
         return;
       }
     }
-    
-  /* $scope.cellClicked = function(row, col) {
-      $log.info(["Clicked on cell: ",row,col]);
-      if(!$scope.isYourTurn){
-        return;
-      }
-      if($scope.selectedPosition.length === 0){
-        if(isNotSelectable(row,col)){
-          return;
-        }
-        $scope.selectedPosition[0] = [row, col];
-        return;
-      }else{
-        if($scope.board[row][col] == ($scope.turnIndex==0 ?'O':'X')){
-          if(isNotSelectable(row,col)){
-            return;
-          }
-          $scope.selectedPosition[0] = [row, col];
-          return;
-        }else{
-          $scope.selectedPosition[1] = [row, col];
-        }
-      }
-      try{
-        moveOri = gameLogic.createMove($scope.selectedPosition[0][0],$scope.selectedPosition[0][1],
-          $scope.selectedPosition[1][0],$scope.selectedPosition[1][1],$scope.turnIndex,$scope.board);
-        $scope.isYourTurn = false;
-        makeGameMove(true);
-        $scope.selectedPosition = [];
-      }catch(e){
-        $log.info(["It is illegal to move position from:", $scope.oldrow, $scope.oldcol," to position:",row,col]);
-        $scope.selectedPosition = [];
-        return;
-      }
-    }; */
     
     function setAll(move){
       resetAll();
