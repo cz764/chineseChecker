@@ -9,55 +9,54 @@ body {
 }
 
 .boxShape {
-    	border : 1px solid #a1a1a1;
-   	 	padding : 5px 4px;
-   		width : 3.5%;
-   		height : 3.5%;
-   		border-radius: 100%;
-   		opacity: 1;
-    	text-align: center; 
-	}
+	border : 0.1px solid #a1a1a1;
+ 	padding : 5px 4px;
+	width : 3.5%;
+	height : 3.5%;
+	border-radius: 100%;
+	opacity: 1;
+	text-align: center; 
+}
 .boxGreen {
-		opacity: 1;
-		-moz-box-shadow: 0 0 7px 5px #a1fa1a;
-		-webkit-box-shadow: 0 0 7px 5px #a1fa1a;
-		box-shadow: 0px 0px 7px 5px #a1fa1a;
-	}
-	
+	opacity: 1;
+	-moz-box-shadow: 0 0 7px 5px #a1fa1a;
+	-webkit-box-shadow: 0 0 7px 5px #a1fa1a;
+	box-shadow: 0px 0px 7px 5px #a1fa1a;
+}
+
 .checkerShapeX {
-    width : 100%;
-    height : 100%;
-    border-radius: 80%;
-    position: relative;
-    //background: blue;
-    background: -webkit-radial-gradient(blue, #0000ef, black); /* Safari 5.1 to 6.0 */
-    background: -o-radial-gradient(blue, #0000ef, black); /* For Opera 11.6 to 12.0 */
-    background: -moz-radial-gradient(blue, #0000ef, black); /* For Firefox 3.6 to 15 */
-    background: radial-gradient(blue, #0000ef, black); /* Standard syntax (must be last) */
-    border : 1px solid ;
-    z-index: 5;
-    opacity: 1;
-    margin-left: auto;
-    margin-right:auto;
-    margin-top:auto;
-    margin-bottom:auto;
+  width : 100%;
+  height : 100%;
+  border-radius: 80%;
+  position: relative;
+  background: -webkit-radial-gradient(blue, #0000ef, black); /* Safari 5.1 to 6.0 */
+  background: -o-radial-gradient(blue, #0000ef, black); /* For Opera 11.6 to 12.0 */
+  background: -moz-radial-gradient(blue, #0000ef, black); /* For Firefox 3.6 to 15 */
+  background: radial-gradient(blue, #0000ef, black); /* Standard syntax (must be last) */
+  border : 1px solid ;
+  z-index: 5;
+  opacity: 1;
+  margin-left: auto;
+  margin-right:auto;
+  margin-top:auto;
+  margin-bottom:auto;
 }
 .checkerShapeO {
-    width : 100%;
-    height : 100%;
-    border-radius: 80%;
-    position: relative;
-    background: -webkit-radial-gradient(red, #df0000, black); /* Safari 5.1 to 6.0 */
-    background: -o-radial-gradient(red, #df0000, black); /* For Opera 11.6 to 12.0 */
-    background: -moz-radial-gradient(red, #df0000, black); /* For Firefox 3.6 to 15 */
-    background: radial-gradient(red, #df0000, black); /* Standard syntax (must be last) */
-    border : 1px solid ;
-    z-index: 5;
-    opacity: 1;
-    margin-left: auto;
-    margin-right:auto;
-    margin-top:auto;
-    margin-bottom:auto;
+  width : 100%;
+  height : 100%;
+  border-radius: 80%;
+  position: relative;
+  background: -webkit-radial-gradient(red, #df0000, black); /* Safari 5.1 to 6.0 */
+  background: -o-radial-gradient(red, #df0000, black); /* For Opera 11.6 to 12.0 */
+  background: -moz-radial-gradient(red, #df0000, black); /* For Firefox 3.6 to 15 */
+  background: radial-gradient(red, #df0000, black); /* Standard syntax (must be last) */
+  border : 1px solid ;
+  z-index: 5;
+  opacity: 1;
+  margin-left: auto;
+  margin-right:auto;
+  margin-top:auto;
+  margin-bottom:auto;
 }
 
 

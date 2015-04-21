@@ -54,11 +54,11 @@ angular.module('myApp')
     $scope.newposition = 50;
     $scope.newpositionTop = 50;
     $scope.setPagePosition = function(index, parentIndex) {
-        $scope.newposition =  $scope.map[parentIndex][index][0] * 6.7 - 13 + '%'
+        $scope.newposition =  $scope.map[parentIndex][index][0] * 6.7 - 12.5 + '%'
         return $scope.newposition;
     }
     $scope.setPagePositionTop = function(parentIndex, index){
-        $scope.newpositionTop = $scope.map[parentIndex][index][1] * 5.7 - 4 + '%'
+        $scope.newpositionTop = $scope.map[parentIndex][index][1] * 5.7 - 3.5 + '%'
         return $scope.newpositionTop;
     }   
     
@@ -145,6 +145,9 @@ angular.module('myApp')
             draggingPiece = document.getElementById("myPiece_" + 
               draggingStartedRowColInBoard.row + "x" + draggingStartedRowColInBoard.col);
             draggingHole = draggingPiece.parentNode;
+            draggingPiece.style['border-width'] = "4px";
+            draggingPiece.style['border-style'] = "groove";
+            draggingPiece.style['border-color'] = "yellow";
             }
           }
         }
@@ -173,6 +176,9 @@ angular.module('myApp')
         // drag ended
         // return the piece to it's original style (then angular will take care to hide it).
         setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col));         
+        draggingPiece.style['border-width'] = "";
+        draggingPiece.style['border-style'] = "";
+        draggingPiece.style['border-color'] = "";
         draggingStartedRowCol = null;
         draggingStartedRowColInBoard = null;
         draggingPiece = null;
