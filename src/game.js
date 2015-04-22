@@ -104,10 +104,8 @@ angular.module('myApp')
       // If the play mode is not pass and play then "rotate" the board
       // for the player. Therefore the board will always look from the
       // point of view of the player in single player mode...
-      $scope.rotate = (params.playMode === "playBlack") ? true : false;
-
-      var copyOfBoard = angular.copy($scope.board);
-      if ($scope.rotate) { $scope.board = getRotateBoard(copyOfBoard); }
+      // $scope.rotate = (params.playMode === "playBlack") ? true : false;
+      $scope.rotate = true;
       
       if(isChain){
         makeGameMove(true);
@@ -171,7 +169,7 @@ angular.module('myApp')
       if (type === "touchend") {
         var from = draggingStartedRowColInBoard;
         var to = boardRowCol;
-        dragDone(from, to);      
+        dragDoneHandler(from, to);      
       } else {
         // Drag continue
         currentPiece = document.getElementById("myPiece_" + boardRowCol.row + "x" + boardRowCol.col);
@@ -218,26 +216,6 @@ angular.module('myApp')
       return null;
     }
 
-    function getRotateBoard(board) {
-      var boardRotating = angular.copy(board);
-      var alternatePlayer = '@';
-      var boardChangedtoAlternate = changeBoardFromTo(board, whitePlayer, alternatePlayer);
-      var boardChangedtoBlack = changeBoardFromTo(boardChangedtoAlternate, whitePlayer, blackPlayer);
-      var boardchangedtoWhite = changeBoardFromTo(boardChangedtoBlack, alternatePlayer, whitePlayer);
-    }
-
-    function changeBoardFromTo(board, fromPlayer, toPlayer) {
-      var resultBoard = angular.copy(board);
-      for (var i = 0; i < resultBoard.length; i++) {
-        for (var j = 0; j < resultBoard[i].length; j++) {
-          if (resultBoard[i][j] === fromPlayer) {
-            resultBoard[i][j] = toPlayer;
-          }
-        }
-      }
-      return resultBoard;
-    }
-
     function setDraggingPieceTopLeft(topLeft) {
       var originalSize = getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col);
       draggingPiece.style.left = (topLeft.left - originalSize.left) + "%";
@@ -281,18 +259,14 @@ angular.module('myApp')
         return;
       }
 
-      var realFrom = from,
-          realTo = to;
       // need to rotate the angle if playblack
       if($scope.rotate) {
-        var fromInMap = $scope.map[from.row][from.col],
-            toInMap = $scope.map[to.row][to.col],
-            realFrom = findRowColInBoard(18 - fromInMap.row, 18 - fromInMap.col),
-            realTo = findRowColInBoard(18 - toInMap.row, 18 - toInMap.col);
-        var rotateBoard = getRotateBoard(angular.copy($scope.board));
-        $scope.board = rotateBoard;
+        from.row = rowsNum + 1 - from.row;
+        from.col = colsNum + 1 - from.col;
+        to.row = rowsNum + 1 - to.row;
+        to.col = colsNum + 1 - to.col;
       }
-      actuallyMakeMove(realFrom, realTo);      
+      actuallyMakeMove(from, to);      
     }
 
     function actuallyMakeMove(from, to) {
@@ -307,6 +281,23 @@ angular.module('myApp')
         $log.info(["It is illegal to move position from:", $scope.oldrow, $scope.oldcol," to position:",to.row, to.col]);
         return;
       }
+    }
+
+    $scope.getCellTypeO = function(row, col) {
+      if ($scope.rotate) {
+        row = rowsNum + 1 - row;
+        col = colsNum + 1 - col;
+      }
+      return $scope.board[row][col] === 'O';
+      
+    }
+
+    $scope.getCellTypeX = function(row, col) {
+      if ($scope.rotate) {
+        row = rowsNum + 1 - row;
+        col = colsNum + 1 - col;
+      }
+      return $scope.board[row][col] === 'X';
     }
     
     function setAll(move){
