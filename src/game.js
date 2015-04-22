@@ -104,8 +104,7 @@ angular.module('myApp')
       // If the play mode is not pass and play then "rotate" the board
       // for the player. Therefore the board will always look from the
       // point of view of the player in single player mode...
-      // $scope.rotate = (params.playMode === "playBlack") ? true : false;
-      $scope.rotate = true;
+      $scope.rotate = (params.playMode === "playBlack") ? true : false;
       
       if(isChain){
         makeGameMove(true);
