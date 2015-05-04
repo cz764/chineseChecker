@@ -2,7 +2,7 @@
 
 'use strict';
 
-angular.module('myApp',[]).factory('gameLogic',function(){
+angular.module('myApp',['ngTouch', 'ui.bootstrap']).factory('gameLogic',function(){
   
   var chain_1;
   var chain_2;
@@ -679,6 +679,10 @@ angular.module('myApp')
     'use strict';
     resizeGameAreaService.setWidthToHeight(1);
 
+    $translate('CHINESECHECKER_GAME').then(function (translation) {
+      console.log("Translation of CHINESECHECKER_GAME is " + translation);
+    });
+
     $scope.selectedPosition = [];
     var moveOri;
     var move;
@@ -723,7 +727,7 @@ angular.module('myApp')
     $scope.newposition = 50;
     $scope.newpositionTop = 50;
     $scope.setPagePosition = function(index, parentIndex) {
-        $scope.newposition =  $scope.map[parentIndex][index][0] * 6.3 - 9 + '%'
+        $scope.newposition =  $scope.map[parentIndex][index][0] * 6.2 - 8.5 + '%'
         return $scope.newposition;
     }
     $scope.setPagePositionTop = function(parentIndex, index){
@@ -926,12 +930,12 @@ angular.module('myApp')
       }
 
       // need to rotate the angle if playblack
-      if($scope.rotate) {
-        from.row = rowsNum + 1 - from.row;
-        from.col = colsNum + 1 - from.col;
-        to.row = rowsNum + 1 - to.row;
-        to.col = colsNum + 1 - to.col;
-      }
+      // if($scope.rotate) {
+      //   from.row = rowsNum + 1 - from.row;
+      //   from.col = colsNum + 1 - from.col;
+      //   to.row = rowsNum + 1 - to.row;
+      //   to.col = colsNum + 1 - to.col;
+      // }
       actuallyMakeMove(from, to);      
     }
 
@@ -950,19 +954,19 @@ angular.module('myApp')
     }
 
     $scope.getCellTypeO = function(row, col) {
-      if ($scope.rotate) {
-        row = rowsNum + 1 - row;
-        col = colsNum + 1 - col;
-      }
+      // if ($scope.rotate) {
+      //   row = rowsNum + 1 - row;
+      //   col = colsNum + 1 - col;
+      // }
       return $scope.board[row][col] === 'O';
       
     }
 
     $scope.getCellTypeX = function(row, col) {
-      if ($scope.rotate) {
-        row = rowsNum + 1 - row;
-        col = colsNum + 1 - col;
-      }
+      // if ($scope.rotate) {
+      //   row = rowsNum + 1 - row;
+      //   col = colsNum + 1 - col;
+      // }
       return $scope.board[row][col] === 'X';
     }
     
@@ -1094,9 +1098,11 @@ angular.module('myApp')
       maxNumberOfPlayers: 2,
       isMoveOk: gameLogic.isMoveOk,
       updateUI: updateUI
-    });
-    
-   
+    });  
+  }])
+  .config(['$translateProvider', function($translateProvider) {
+    'use strict';
+    $translateProvider.init(['en', 'zh']);
   }]);
 
 })();;angular.module('myApp').factory('aiService',

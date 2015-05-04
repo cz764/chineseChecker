@@ -60,7 +60,7 @@ angular.module('myApp')
     $scope.newposition = 50;
     $scope.newpositionTop = 50;
     $scope.setPagePosition = function(index, parentIndex) {
-        $scope.newposition =  $scope.map[parentIndex][index][0] * 6.3 - 9 + '%'
+        $scope.newposition =  $scope.map[parentIndex][index][0] * 6.2 - 8.5 + '%'
         return $scope.newposition;
     }
     $scope.setPagePositionTop = function(parentIndex, index){
