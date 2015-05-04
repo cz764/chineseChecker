@@ -2,7 +2,7 @@
 
 'use strict';
 
-angular.module('myApp',[]).factory('gameLogic',function(){
+angular.module('myApp',['ngTouch', 'ui.bootstrap']).factory('gameLogic',function(){
   
   var chain_1;
   var chain_2;

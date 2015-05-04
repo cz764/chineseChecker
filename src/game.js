@@ -12,6 +12,10 @@ angular.module('myApp')
     'use strict';
     resizeGameAreaService.setWidthToHeight(1);
 
+    $translate('CHINESECHECKER_GAME').then(function (translation) {
+      console.log("Translation of CHINESECHECKER_GAME is " + translation);
+    });
+
     $scope.selectedPosition = [];
     var moveOri;
     var move;
@@ -259,12 +263,12 @@ angular.module('myApp')
       }
 
       // need to rotate the angle if playblack
-      if($scope.rotate) {
-        from.row = rowsNum + 1 - from.row;
-        from.col = colsNum + 1 - from.col;
-        to.row = rowsNum + 1 - to.row;
-        to.col = colsNum + 1 - to.col;
-      }
+      // if($scope.rotate) {
+      //   from.row = rowsNum + 1 - from.row;
+      //   from.col = colsNum + 1 - from.col;
+      //   to.row = rowsNum + 1 - to.row;
+      //   to.col = colsNum + 1 - to.col;
+      // }
       actuallyMakeMove(from, to);      
     }
 
@@ -283,19 +287,19 @@ angular.module('myApp')
     }
 
     $scope.getCellTypeO = function(row, col) {
-      if ($scope.rotate) {
-        row = rowsNum + 1 - row;
-        col = colsNum + 1 - col;
-      }
+      // if ($scope.rotate) {
+      //   row = rowsNum + 1 - row;
+      //   col = colsNum + 1 - col;
+      // }
       return $scope.board[row][col] === 'O';
       
     }
 
     $scope.getCellTypeX = function(row, col) {
-      if ($scope.rotate) {
-        row = rowsNum + 1 - row;
-        col = colsNum + 1 - col;
-      }
+      // if ($scope.rotate) {
+      //   row = rowsNum + 1 - row;
+      //   col = colsNum + 1 - col;
+      // }
       return $scope.board[row][col] === 'X';
     }
     
@@ -427,9 +431,11 @@ angular.module('myApp')
       maxNumberOfPlayers: 2,
       isMoveOk: gameLogic.isMoveOk,
       updateUI: updateUI
-    });
-    
-   
+    });  
+  }])
+  .config(['$translateProvider', function($translateProvider) {
+    'use strict';
+    $translateProvider.init(['en', 'zh']);
   }]);
 
 })();
